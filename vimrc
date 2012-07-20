@@ -71,6 +71,11 @@ set nobackup
 set nowritebackup
 set noswapfile
 
+" default tab setup
+set autoindent
+set expandtab
+set softtabstop=2
+set shiftwidth=2
 
 """""""""""""""""""""""""""""""""""
 " OS-SPECIFIC SETUP
