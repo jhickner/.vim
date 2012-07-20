@@ -31,10 +31,10 @@ set number
 set ruler
 set encoding=utf-8
 "set statusline=  " clear for when vimrc is reloaded
-"set statusline=\ %-3.3n\ %t%m%r%h%w\ %y\ [%{strlen(&fenc)?&fenc:'none'},%{&ff}]%=\[%5l/%5L\,\ %3c\]\ %3P\  
+set statusline=\ %-3.3n\ %t%m%r%h%w\ %y\ [%{strlen(&fenc)?&fenc:'none'},%{&ff}]%=\[%5l/%5L\,\ %3c\]\ %3P\  
 set cursorline      " show a highlight on the cursor line
-"set showmode        " shows current mode (INSERT/etc)
-"set showcmd         " shows some extra info about the current cmd in bottom right
+set showmode        " shows current mode (INSERT/etc)
+set showcmd         " shows some extra info about the current cmd in bottom right
 set ttyfast
 set hidden          " allow hidden modified buffers
 set wildmenu

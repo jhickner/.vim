@@ -16,9 +16,6 @@
 [submodule "bundle/vim-ls"]
 	path = bundle/vim-ls
 	url = https://github.com/gkz/vim-ls.git
-[submodule "bundle/vim-powerline"]
-	path = bundle/vim-powerline
-	url = https://github.com/Lokaltog/vim-powerline.git
 [submodule "bundle/surround"]
 	path = bundle/surround
 	url = https://github.com/tpope/vim-surround.git
