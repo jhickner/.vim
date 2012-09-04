@@ -31,3 +31,24 @@
 [submodule "bundle/slimv"]
 	path = bundle/slimv
 	url = https://github.com/vim-scripts/slimv.vim.git
+[submodule "bundle/coffeescript"]
+	path = bundle/coffeescript
+	url = https://github.com/kchmck/vim-coffee-script.git
+[submodule "bundle/haskellmode-vim"]
+	path = bundle/haskellmode-vim
+	url = https://github.com/lukerandall/haskellmode-vim.git
+[submodule "bundle/ghcmod-vim"]
+	path = bundle/ghcmod-vim
+	url = https://github.com/eagletmt/ghcmod-vim.git
+[submodule "bundle/syntastic"]
+	path = bundle/syntastic
+	url = https://github.com/scrooloose/syntastic.git
+[submodule "bundle/vimproc"]
+	path = bundle/vimproc
+	url = https://github.com/Shougo/vimproc.git
+[submodule "bundle/neocomplcache"]
+	path = bundle/neocomplcache
+	url = https://github.com/Shougo/neocomplcache.git
+[submodule "bundle/go"]
+	path = bundle/go
+	url = https://github.com/jnwhiteh/vim-golang.git
