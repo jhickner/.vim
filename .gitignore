@@ -1,2 +1,4 @@
 view/
 .netrwhist
+disabled_plugins
+.DS_Store

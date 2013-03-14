@@ -1,9 +1,21 @@
 call pathogen#infect()
 syntax on
 filetype plugin indent on
-
 let mapleader = ","
+set clipboard=unnamed
 
+" function! ResCur()
+"   if line("'\"") <= line("$")
+"     normal! g`"
+"     return 1
+"   endif
+" endfunction
+" 
+" augroup resCur
+"   autocmd!
+"   autocmd BufWinEnter * call ResCur()
+" augroup END
+ 
 color solarized
 set background=dark
 
@@ -17,6 +29,7 @@ set background=dark
 set winheight=5
 set winminheight=5
 set winheight=999
+
 
 " better search behavior
 set ignorecase
@@ -77,12 +90,15 @@ set expandtab
 set softtabstop=2
 set shiftwidth=2
 
+" nnoremap <silent> <leader>ne :lnext<CR>
+
 """""""""""""""""""""""""""""""""""
 " OS-SPECIFIC SETUP
 """""""""""""""""""""""""""""""""""
+let os=substitute(system('uname'), '\n', '', '')
 
 " osx iterm2
-if has("macunix")
+if os == 'Darwin' || os == 'Mac'
   " iterm2 vim settings
   let &t_SI = "\<Esc>]50;CursorShape=1\x7"
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
@@ -94,20 +110,25 @@ if has("macunix")
   set undofile
 
   " yank to system clipboard
-  nnoremap y "+y
-  nnoremap Y "+y$
-  nnoremap d "+d
-  nnoremap D "+D
-  nnoremap p "+p
-  vnoremap y "+y
-  vnoremap Y "+y$
-  vnoremap d "+d
-  vnoremap D "+D
-  vnoremap p "+p  
-endif
+  "nnoremap y "+y
+  "nnoremap Y "+y$
+  "nnoremap d "+d
+  "nnoremap D "+D
+  "nnoremap p "+p
+  "vnoremap y "+y
+  "vnoremap Y "+y$
+  "vnoremap d "+d
+  "vnoremap D "+D
+  "vnoremap p "+p  
 
-" cygwin
-if has("win32unix")
+  " Preserve indentation while pasting text from the OS X clipboard
+  noremap <leader>p :set paste<CR>:put  *<CR>:set nopaste<CR>
+
+  " haskell
+  let g:haddock_browser="open"
+
+elseif has("win32unix")
+  " cygwin
   " mintty settings
   " mode dependent cursor
   let &t_ti.="\e[1 q"
@@ -123,6 +144,17 @@ if has("win32unix")
   vnoremap <silent> <C-c> :w !cat > /dev/clipboard<CR> 
 endif
 
+" tmux will only forward escape sequences to the terminal if surrounded by a DCS sequence
+" http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTinkbdoZ8eNR1X2UobLTeww1jFrvfJxTMfKSq-L%2B%40mail.gmail.com&forum_name=tmux-users
+if exists('$TMUX')
+  "nnoremap y "*y
+  "nnoremap Y "*Y
+  "nnoremap p "*p
+
+
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+endif
 
 """""""""""""""""""""""""""""""""""
 " MAPPINGS
@@ -186,6 +218,13 @@ nmap <leader>i :set list!<CR>
 " toggle spell check
 nmap <Leader>s :setlocal spell!<CR>
 
+" delete buffer with ctrl-b or leader-b
+nmap <leader>b :bd<cr>
+nmap <c-b> :bd<cr>
+
+" zoom buffer
+nmap <leader>o <c-w>o<cr>
+
 
 """""""""""""""""""""""""""""""""""
 " AUTOCOMMANDS
@@ -204,6 +243,20 @@ autocmd FileType actionscript setlocal sw=4 ts=4 sts=4
 
 autocmd VimEnter * set vb t_vb=   " disable blinking error cursor
 
+" haskell
+au BufEnter *.hs compiler ghc
+au BufEnter *.lhs compiler ghc
+au BufEnter *.elm set ft=haskell
+"let g:ghcmod_ghc_options = ['-fno-warn-orphans', '-fno-warn-missing-signatures']
+let g:haddock_indexfiledir="~/.vim/"
+let g:syntastic_haskell_checker_args = '-g -fno-code -g -fno-warn-orphans -g -fno-warn-missing-signatures --hlintOpt="--language=XmlSyntax"'
+" neocomplcache
+let g:neocomplcache_enable_at_startup = 1
+" <CR>: close popup and save indent. 
+inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>" 
+" <TAB>: completion. 
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>" 
+" <C-h>, <BS>: close popup and delete backword char. 
 
 """""""""""""""""""""""""""""""""""
 " PLUGIN CONFIGURATION
@@ -254,7 +307,10 @@ function! VimwikiWeblinkHandler(weblink)
 endfunction
 let g:vimwiki_folding = 1
 let g:vimwiki_fold_lists = 1
-let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/'}]
+let wiki = {}
+let wiki.path = '~/DropBox/vimwiki/'
+let wiki.nested_syntaxes = {'haskell': 'haskell'}
+let g:vimwiki_list = [wiki]
 
 " TAGBAR
 let g:tagbar_usearrows = 1
@@ -272,6 +328,19 @@ nmap <C-t> :CtrlP<CR>
 """""""""""""""""""""""""""""""""""
 " FUNCTIONS
 """""""""""""""""""""""""""""""""""
+
+" restore cursor position
+function! ResCur()
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
+endfunction
+
+augroup resCur
+  autocmd!
+  autocmd BufWinEnter * call ResCur()
+augroup END
 
 " AUTOJUMP
 function! AutoJump(path)
